@@ -1,0 +1,40 @@
+{
+  "name": "validator",
+  "version": "0.0.1",
+  "description": "",
+  "type": "module",
+  "main": "dist/validator.cjs.min.js",
+  "module": "dist/validator.esm.min.js",
+  "browser": "dist/validator.umd.min.js",
+  "types": "dist/types/index.d.ts",
+  "scripts": {
+    "prepare": "husky install",
+    "dev": "npm run clear && rollup -c -w",
+    "build": "npm run clear && rollup -c",
+    "clear": "rimraf dist",
+    "lint": "eslint . --fix"
+  },
+  "keywords": [],
+  "author": {
+    "name": "xuanmo",
+    "email": "me@xuanmo.xin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/D-xuanmo/validator"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-eslint": "^9.0.3",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
+    "eslint": "^8.36.0",
+    "husky": "^8.0.3",
+    "rimraf": "^4.4.0",
+    "rollup": "^3.20.0",
+    "rollup-plugin-uglify": "^6.0.4",
+    "typescript": "^5.0.2"
+  }
+}

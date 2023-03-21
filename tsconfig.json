@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "target": "ESNext",
+    "module": "ESNext",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "strict": true,
+    "declaration": true,
+    "declarationDir":"./types",
+    "declarationMap": true
+  },
+  "include": ["src/**/*.ts"]
+}
