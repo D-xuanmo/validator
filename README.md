@@ -126,3 +126,8 @@ import zhCN from '@xuanmo/validator/locale/zh-CN.json'
 const validator = new Validator()
 validator.localize(zhCN)
 ```
+
+## License
+
+- 本项目基于 [MIT](./LICENSE) 协议，欢迎有兴趣的朋友一起交流
+- Copyright © 2023-PRESENT [D-Xuanmo](https://github.com/D-xuanmo)
