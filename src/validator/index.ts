@@ -76,10 +76,10 @@ class Validator {
 
   /**
    * 格式化错误信息
-   * @param message
-   * @param fieldName
-   * @param ruleParams
-   * @param paramsEnum
+   * @param message 错误信息
+   * @param fieldName 当前字段
+   * @param ruleParams 校验规则参数
+   * @param paramsEnum 参数映射
    */
   private formatMessage(
     message: string,
@@ -102,8 +102,8 @@ class Validator {
 
   /**
    * 正则校验规则
-   * @param value
-   * @param regexp
+   * @param value 被校验值
+   * @param regexp 正则
    */
   private regexpValidateHandler(value: unknown, regexp: ValidatorRuleModel['regexp']) {
     if (value) return new RegExp(regexp!).test(value as string)
@@ -112,7 +112,7 @@ class Validator {
 
   /**
    * 处理 rules 字段 value
-   * @param ruleParams
+   * @param ruleParams 规则参数
    */
   private formatRuleParams(ruleParams: RuleParamsType) {
     if (!ruleParams) return ruleParams

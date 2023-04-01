@@ -1,8 +1,12 @@
-# Validator 
+# Validator [![Node.js CI](https://github.com/D-xuanmo/validator/actions/workflows/node.js.yml/badge.svg)](https://github.com/D-xuanmo/validator/actions/workflows/node.js.yml)
 
+## 简介
+
+- `Validator` 是数据集验证工具，主打多个规则以管道符模式进行串行校验，常用于表单数据繁琐的校验
 - 用最少的代码，解决繁琐的事情
-- 数据集验证工具，主打多个规则以管道符模式进行串行校验，常用于表单数据繁琐的校验，可完美与后端返回校验配置
-- 规则快速预览： `required|email|length:8`
+- 支持校验规则扩展、单例模式、异步校验
+- 打包后体积 `6.5 KB`，Gzip 后体积 `2.5 KB`
+- 规则快速预览： `required|email|length:8|between:2,8`
 
 ## 安装
 
@@ -62,6 +66,7 @@ validator
 
 - `{#field}` 会被替换为当前字段
 - `{meta}` 具体规则的值
+- `ruleParams` 多个值通过 `,` 逗号分隔
 
 ```typescript
 // 以 `length` 规则为例，错误信息定义：{#field}长度必须为:{length}
@@ -79,8 +84,17 @@ validator.validate({
 ```typescript
 import validator from '@xuanmo/validator'
 validator.validate({
-  name: 'xuanmo',
-  rules: 'required|max:5'
+  name: {
+    value: 'xuanmo',
+    rules: 'length:5|between:2,8'
+  },
+  scope: {
+    value: 'xuanmo',
+    // 局部校验规则，优先级最高，不会执行 rules 模式
+    validator(value) {
+      return false
+    }
+  }
 })
 
 /**
