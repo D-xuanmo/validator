@@ -18,6 +18,8 @@ jobs:
         node-version: 16
         registry-url: https://registry.npmjs.org/
     - uses: pnpm/action-setup@v2
+      with:
+        version: 7.5.2
 
     - run: pnpm i
     - run: pnpm build
