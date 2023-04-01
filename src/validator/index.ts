@@ -1,12 +1,14 @@
 import rules from '../rules'
-import { LocaleMessageType, OmitObjectProperties, ValidatorRuleModel } from '../types'
 import {
+  LocaleMessageType,
+  OmitObjectProperties,
   ScopeValidateType,
   ValidateContextType,
   ValidateDataModel,
   ValidateErrorType,
-  ValidatorModelType
-} from './types'
+  ValidatorModelType,
+  ValidatorRuleModel
+} from '../types'
 import { isObject, isPromise, throwError } from '@xuanmo/javascript-utils'
 
 class Validator {

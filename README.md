@@ -74,6 +74,23 @@ validator.validate({
 })
 ```
 
+### validate 执行校验
+
+```typescript
+import validator from '@xuanmo/validator'
+validator.validate({
+  name: 'xuanmo',
+  rules: 'required|max:5'
+})
+
+/**
+ * validate TS 类型说明
+ * @param data 校验数据
+ * @returns Promise<true | ValidateErrorType> 校验通过 resolve(true)，失败在 catch 中获取错误信息
+ */
+type validate = (data: ValidateDataModel) => Promise<true | ValidateErrorType>;
+```
+
 ### localize 多语言注册
 
 ```typescript
