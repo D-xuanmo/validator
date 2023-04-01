@@ -8,7 +8,6 @@ on:
 
 jobs:
   publish-npm:
-
     runs-on: macos-latest
 
     # 任务的步骤
@@ -18,8 +17,9 @@ jobs:
       with:
         node-version: 16
         registry-url: https://registry.npmjs.org/
+    - uses: pnpm/action-setup@v2
 
-    - run: pnpm
+    - run: pnpm i
     - run: pnpm build
 
       env:
