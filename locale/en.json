@@ -1,0 +1,10 @@
+{
+  "code": "en",
+  "message": {
+    "required": "The {#field} field is required",
+    "email": "The {#field} field must be a valid email",
+    "length": "The {#field} field must be {length} long",
+    "min": "The {#field} field value cannot be less than:{min}",
+    "max": "The {#field} field value cannot be greater than:{max}"
+  }
+}

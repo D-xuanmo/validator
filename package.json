@@ -1,20 +1,23 @@
 {
-  "name": "validator",
-  "version": "0.0.1",
+  "name": "@xuanmo/validator",
+  "version": "0.0.1-alpha",
   "description": "",
+  "private": false,
   "type": "module",
-  "main": "dist/validator.cjs.min.js",
-  "module": "dist/validator.esm.min.js",
-  "browser": "dist/validator.umd.min.js",
-  "types": "dist/types/index.d.ts",
+  "main": "dist/validator.cjs.js",
+  "module": "dist/validator.esm.js",
+  "browser": "dist/validator.umd.js",
+  "types": "dist/types/main.d.ts",
   "scripts": {
     "prepare": "husky install",
-    "dev": "npm run clear && rollup -c -w",
-    "build": "npm run clear && rollup -c",
+    "dev": "cross-env NODE_ENV=dev npm run clear && rollup -c -w",
+    "build": "cross-env NODE_ENV=prod npm run clear && rollup -c",
     "clear": "rimraf dist",
     "lint": "eslint . --fix"
   },
-  "keywords": [],
+  "keywords": [
+    "validate form"
+  ],
   "author": {
     "name": "xuanmo",
     "email": "me@xuanmo.xin"
@@ -25,16 +28,24 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.21.3",
+    "@babel/plugin-transform-runtime": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-eslint": "^9.0.3",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.0.0",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
+    "@xuanmo/javascript-utils": "^0.0.43",
+    "cross-env": "^7.0.3",
     "eslint": "^8.36.0",
     "husky": "^8.0.3",
     "rimraf": "^4.4.0",
-    "rollup": "^3.20.0",
-    "rollup-plugin-uglify": "^6.0.4",
+    "rollup": "^3.20.2",
+    "tslib": "^2.5.0",
     "typescript": "^5.0.2"
   }
 }

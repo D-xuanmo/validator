@@ -1,9 +1,26 @@
 {
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "root": true,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
   "rules": {
-    "semi": ["error", "never"]
+    "semi": [
+      "error",
+      "never"
+    ],
+    "@typescript-eslint/no-unused-vars": 2,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-non-null-asserted-optional-chain": 0,
+    "@typescript-eslint/no-non-null-assertion": 0
   }
 }

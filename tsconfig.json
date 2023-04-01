@@ -1,14 +1,24 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "target": "ESNext",
+    "target": "es5",
     "module": "ESNext",
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "strict": true,
+    "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationDir":"./types",
-    "declarationMap": true
+    "declarationDir": "types",
+    "declarationMap": false,
+    "moduleResolution": "Node",
+    "isolatedModules": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ]
   },
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/**/*.ts"
+  ]
 }

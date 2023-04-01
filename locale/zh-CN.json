@@ -1,0 +1,10 @@
+{
+  "code": "zh-CN",
+  "message": {
+    "required": "{#field}不能为空",
+    "email": "{#field}不是一个有效的邮箱",
+    "length": "{#field}长度必须为:{length}",
+    "min": "{#field}值不能小于:{min}",
+    "max": "{#field}值不能大于:{max}"
+  }
+}

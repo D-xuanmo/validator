@@ -1,62 +1,43 @@
 import eslint from '@rollup/plugin-eslint'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
 import typescript from '@rollup/plugin-typescript'
-import { uglify } from 'rollup-plugin-uglify'
+import commonjs from '@rollup/plugin-commonjs'
+import { babel } from '@rollup/plugin-babel'
+import terser from '@rollup/plugin-terser'
 
-const buildFileName = 'validator'
-
-const uglifyOption = {
-  compress: {
-    pure_funcs: ['console.log']
-  }
-}
-
-const baseConfig = {
-  input: 'src/index.ts',
-
+export default {
+  input: 'src/main.ts',
   plugins: [
     eslint(),
-    typescript({ tsconfig: './tsconfig.json' })
+    nodeResolve(),
+    commonjs(),
+    typescript({ tsconfig: './tsconfig.json' }),
+    babel({
+      exclude: './node_modules/**',
+      babelHelpers: 'runtime'
+    }),
+    terser({
+      compress: {
+        drop_console: process.env.NODE_ENV === 'prod'
+      }
+    })
+  ],
+  output: [
+    {
+      file: 'dist/validator.esm.js',
+      format: 'es',
+    },
+    {
+      file: 'dist/validator.cjs.js',
+      format: 'cjs',
+      name: 'validator',
+      exports: 'named'
+    },
+    {
+      file: 'dist/validator.umd.js',
+      format: 'umd',
+      name: 'validator',
+      exports: 'named'
+    }
   ]
 }
-
-export default [
-  {
-    ...baseConfig,
-    output: [
-      {
-        file: `dist/${buildFileName}.cjs.js`,
-        format: 'cjs'
-      },
-      {
-        file: `dist/${buildFileName}.esm.js`,
-        format: 'es'
-      },
-      {
-        name: 'JSUtils',
-        file: `dist/${buildFileName}.umd.js`,
-        format: 'umd'
-      }
-    ]
-  },
-  {
-    ...baseConfig,
-    output: [
-      {
-        file: `dist/${buildFileName}.cjs.min.js`,
-        format: 'cjs',
-        plugins: [uglify(uglifyOption)]
-      },
-      {
-        file: `dist/${buildFileName}.esm.min.js`,
-        format: 'es',
-        plugins: [uglify(uglifyOption)]
-      },
-      {
-        name: 'javascriptUtils',
-        file: `dist/${buildFileName}.umd.min.js`,
-        format: 'umd',
-        plugins: [uglify(uglifyOption)]
-      }
-    ]
-  }
-]
