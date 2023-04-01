@@ -1,6 +1,12 @@
 import { isEmpty } from '@xuanmo/javascript-utils'
+import { RuleParamsType, SingleRuleType } from '../types'
 
-export const maxRule = (value: number, ruleValue: string) => {
-  if (isEmpty(value)) return true
-  return value < parseFloat(ruleValue)
+const rule: SingleRuleType = {
+  validator: (value: unknown, params: RuleParamsType) => {
+    if (isEmpty(value)) return true
+
+    return (value as number) < parseFloat(params as string)
+  }
 }
+
+export default rule

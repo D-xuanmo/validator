@@ -1,12 +1,15 @@
-import { RuleNames } from '../types'
-import { requiredRule } from './required'
-import { emailRule } from './email'
-import { lengthRule } from './length'
-import { maxRule } from './max'
-import { minRule } from './min'
-import { floatRule, integerRule, numberRule } from './number'
+import { RuleNames, SingleRuleType } from '../types'
+import requiredRule from './required'
+import emailRule from './email'
+import lengthRule from './length'
+import maxRule from './max'
+import minRule from './min'
+import numberRule from './number'
+import integerRule from './integer'
+import floatRule from './float'
+import betweenRule from './between'
 
-const rules: Record<RuleNames, any> = {
+const rules: Record<RuleNames, SingleRuleType> = {
   required: requiredRule,
   email: emailRule,
   length: lengthRule,
@@ -14,7 +17,8 @@ const rules: Record<RuleNames, any> = {
   min: minRule,
   number: numberRule,
   integer: integerRule,
-  float: floatRule
+  float: floatRule,
+  between: betweenRule as any
 }
 
 export default rules

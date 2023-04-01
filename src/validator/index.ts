@@ -1,15 +1,18 @@
 import rules from '../rules'
+import { isEmpty, isObject, isPromise, throwError } from '@xuanmo/javascript-utils'
 import {
   LocaleMessageType,
   OmitObjectProperties,
+  RuleParamsType,
   ScopeValidateType,
+  SingleRuleType,
   ValidateContextType,
   ValidateDataModel,
   ValidateErrorType,
   ValidatorModelType,
   ValidatorRuleModel
 } from '../types'
-import { isObject, isPromise, throwError } from '@xuanmo/javascript-utils'
+import { RULE_PARAMS_SEPARATOR } from './constants'
 
 class Validator {
   /**
@@ -57,7 +60,8 @@ class Validator {
     for (const [key, value] of Object.entries(rules)) {
       this.extend(key, {
         message: (this.locale as never)[key],
-        validator: value
+        validator: value.validator,
+        paramsEnum: value.paramsEnum
       })
     }
   }
@@ -74,17 +78,26 @@ class Validator {
    * 格式化错误信息
    * @param message
    * @param fieldName
-   * @param replaceMap
+   * @param ruleParams
+   * @param paramsEnum
    */
-  private formatMessage(message: string, fieldName: string, ...replaceMap: string[]) {
-    let index = 0
-    return message
-      .replace(/\{#field}/gi, fieldName)
-      .replace(/\{[a-z]+}/gi, () => {
-        const replaced = replaceMap[index]
-        index++
-        return replaced ?? ''
+  private formatMessage(
+    message: string,
+    fieldName: string,
+    ruleParams: RuleParamsType,
+    paramsEnum: SingleRuleType['paramsEnum']
+  ) {
+    let formatted = message.replace(/\{#field}/gi, fieldName)
+    if (Array.isArray(ruleParams)) {
+      if (isEmpty(paramsEnum)) throwError('validator', `The {${fieldName}} field validation rule parameter is not defined.`)
+      ruleParams.forEach((item, index) => {
+        formatted = formatted.replace(new RegExp(`\\{${paramsEnum![index].name}}`), item)
       })
+    }
+    if (typeof ruleParams === 'string') {
+      formatted = formatted.replace(/\{[a-z]+}/i, ruleParams)
+    }
+    return formatted
   }
 
   /**
@@ -95,6 +108,20 @@ class Validator {
   private regexpValidateHandler(value: unknown, regexp: ValidatorRuleModel['regexp']) {
     if (value) return new RegExp(regexp!).test(value as string)
     return true
+  }
+
+  /**
+   * 处理 rules 字段 value
+   * @param ruleParams
+   */
+  private formatRuleParams(ruleParams: RuleParamsType) {
+    if (!ruleParams) return ruleParams
+
+    if (ruleParams.includes(RULE_PARAMS_SEPARATOR)) {
+      return (ruleParams as string).split(RULE_PARAMS_SEPARATOR)
+    }
+
+    return ruleParams
   }
 
   /**
@@ -147,22 +174,26 @@ class Validator {
     if (rules) {
       for (let i = 0; i < rules.length; i++) {
         const item = rules[i]
-        const [ruleName, ruleValue] = item.split(':')
+        const [ruleName, ruleParams] = item.split(':')
         const validateModel = this.validateModel.get(ruleName)
-        if (!validateModel) throwError('validator', `${ruleName}规则未注册`)
+        if (!validateModel) throwError('validator', `{${ruleName}} rule not registered.`)
         // 校验结果
         let result = true
-        if (ruleModel.regexp) {
+        if (validateModel.regexp) {
           result = this.regexpValidateHandler(value, validateModel.regexp)
         }
         if (validateModel.validator) {
           result = isPromise(validateModel.validator)
-            ? await validateModel.validator?.(value, ruleValue, context)!
-            : validateModel.validator?.(value, ruleValue, context)! as boolean
+            ? await validateModel.validator?.(value, this.formatRuleParams(ruleParams), context)!
+            : validateModel.validator?.(value, this.formatRuleParams(ruleParams), context)! as boolean
         }
         if (!result) {
           errorResult = {
-            message: this.formatMessage(validateModel.message, fieldName, ruleValue),
+            message: this.formatMessage(
+              validateModel.message,
+              fieldName,
+              this.formatRuleParams(ruleParams), validateModel.paramsEnum
+            ),
             name: fieldName
           }
           break

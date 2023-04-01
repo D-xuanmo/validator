@@ -1,4 +1,10 @@
-export const lengthRule = (value: string, ruleValue: string) => {
-  if (!value) return true
-  return value.length === +ruleValue
+import { RuleParamsType, SingleRuleType } from '../types'
+
+const rule: SingleRuleType = {
+  validator: (value: unknown, params: RuleParamsType) => {
+    if (!value) return true
+    return (value as string).length === +(params as string)
+  }
 }
+
+export default rule

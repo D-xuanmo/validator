@@ -10,6 +10,7 @@ export type RuleNames =
   | 'number'
   | 'integer'
   | 'float'
+  | 'between'
 
 /**
  * 国际化列表
@@ -29,7 +30,7 @@ export type LocaleMessageType = {
 /**
  * 校验规则模型
  */
-export type ValidatorRuleModel = {
+export type ValidatorRuleModel = OmitObjectProperties<SingleRuleType, 'validator'> & {
   /**
    * 失败错误信息
    */
@@ -61,14 +62,35 @@ export type ValidateContextType = {
 }
 
 /**
+ * 规则参数
+ * @example
+ * between:2,8
+ */
+export type RuleParamsType = string | string[] | undefined
+
+/**
+ * 单个规则类型
+ */
+export type SingleRuleType<TValue = unknown, TP = RuleParamsType> = {
+  validator: ValidatorHandlerType<TValue, TP>
+
+  /**
+   * 参数枚举
+   */
+  paramsEnum?: Array<{
+    name: string
+  }>
+}
+
+/**
  * 校验方法
  * @param value 当前值
- * @param ruleValue 当前校验规则的值
+ * @param ruleParams 当前校验规则的值
  * @param context
  */
-export type ValidatorHandlerType<TValue = unknown> = (
+export type ValidatorHandlerType<TValue = unknown, TP = RuleParamsType> = (
   value: TValue,
-  ruleValue?: string | undefined,
+  ruleParams?: TP,
   context?: ValidateContextType
 ) => boolean | Promise<boolean>
 

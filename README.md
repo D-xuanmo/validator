@@ -137,6 +137,7 @@ validator.extends({
 - `number` 数字，包含浮点数、整数
 - `float` 浮点数
 - `integer` 整数
+- `between` 数值区间
 
 ## 单例模式
 

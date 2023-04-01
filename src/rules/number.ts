@@ -1,7 +1,8 @@
-import { isFloatNumber, isInteger, isNumber } from '@xuanmo/javascript-utils'
+import { isNumber } from '@xuanmo/javascript-utils'
+import { SingleRuleType } from '../types'
 
-export const numberRule = (value: unknown) => isNumber(value)
+const rule: SingleRuleType = {
+  validator: (value: unknown) => isNumber(value)
+}
 
-export const integerRule = (value: unknown) => isInteger(value)
-
-export const floatRule = (value: unknown) => isFloatNumber(value)
+export default rule
