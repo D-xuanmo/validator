@@ -7,6 +7,9 @@ export type RuleNames =
   | 'email'
   | 'min'
   | 'max'
+  | 'number'
+  | 'integer'
+  | 'float'
 
 /**
  * 国际化列表

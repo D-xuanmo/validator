@@ -1,17 +1,16 @@
 {
   "name": "@xuanmo/validator",
-  "version": "0.0.2-alpha",
-  "description": "",
+  "version": "0.0.3-alpha",
+  "description": "用最少的代码，解决繁琐的事情",
   "private": false,
-  "type": "module",
   "main": "dist/validator.cjs.js",
   "module": "dist/validator.esm.js",
   "browser": "dist/validator.umd.js",
   "types": "dist/types/main.d.ts",
   "scripts": {
     "prepare": "husky install",
-    "dev": "cross-env NODE_ENV=dev npm run clear && rollup -c -w",
-    "build": "cross-env NODE_ENV=prod npm run clear && rollup -c",
+    "dev": "cross-env NODE_ENV=dev npm run clear && rollup -c -w --bundleConfigAsCjs",
+    "build": "cross-env NODE_ENV=prod npm run clear && rollup -c --bundleConfigAsCjs",
     "clear": "rimraf dist",
     "lint": "eslint . --fix"
   },
