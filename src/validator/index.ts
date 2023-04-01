@@ -207,13 +207,19 @@ class Validator {
   /**
    * 执行校验
    * @param data 校验数据
+   * @param options
    */
-  validate = (data: ValidateDataModel): Promise<true | ValidateErrorType> => {
+  validate = (data: ValidateDataModel, options?: {
+    // 是否校验所有规则，默认：true，如果存在多个异步校验，不建议开启
+    checkAll?: boolean
+  }): Promise<true | ValidateErrorType> => {
     return new Promise((resolve, reject) => {
       (async () => {
+        const { checkAll = true } = options ?? {}
+        const errorResult: Record<string, ValidateErrorType> = {}
         for (const [fieldName, rule] of Object.entries(data)) {
           const { value, ...rest } = rule
-          let result
+          let result: ValidateErrorType | boolean
           // 如果当前数据存在范围校验，则不需要执行 rules 规则
           if (rest.regexp || rest.validator) {
             result = await this.scopeValidateHandler(value, fieldName, rest as ScopeValidateType, {
@@ -224,7 +230,15 @@ class Validator {
               data
             })
           }
-          if (isObject(result)) reject(result)
+          if (isObject(result)) {
+            if (!checkAll) {
+              reject(result)
+            }
+            errorResult[(result as ValidateErrorType).name] = result as ValidateErrorType
+          }
+          if (checkAll) {
+            reject(errorResult)
+          }
         }
         resolve(true)
       })()
