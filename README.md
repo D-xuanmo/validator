@@ -101,14 +101,43 @@ validator.validate({
     }
   }
 })
-
-/**
- * validate TS 类型说明
- * @param data 校验数据
- * @returns Promise<true | ValidateErrorType> 校验通过 resolve(true)，失败在 catch 中获取错误信息
- */
-type validate = (data: ValidateDataModel) => Promise<true | ValidateErrorType>;
 ```
+
+#### Rule 结构说明
+
+|键名|说明|类型|
+|---|---|---|
+|value|(必须)当前被校验的数据|`unknown`|
+|required|(非必须)是否必填，与 `rules` 中的 `required` 等价|`boolean`|
+|rules|(非必须)校验规则，以管道符分隔，冒号后边的为校验规则值|`string`|
+|label|(非必须)用于覆盖 `message {#field}` 标识|`string`|
+|regexp|(非必须)正则校验，一般只有全局中无匹配规则时使用|`RegExp \| string`|
+|message|(非必须)校验错误提示信息，权重最高，一般不使用|`string`|
+|validator|(非必须)校验函数权重高于 `rules`，一般只有全局中无匹配规则时使用|`ValidatorHandlerType`|
+
+#### TS 类型
+```typescript
+/**
+ * 执行校验
+ * @param data 校验数据
+ * @param options
+ */
+type ValidateType = (
+  data: ValidateDataModel,
+  options?: {
+    // 是否执行全部规则的校验，默认为 true，如果字段较多，存在多个异步校验，不建议开启
+    checkAll?: boolean;
+  }
+) => ValidateReturnType;
+```
+
+#### 校验权重说明
+
+> required > regexp > validator > rules
+
+#### message 字段权重说明
+
+> validate.field.message > rule.message
 
 ### localize 多语言注册
 
@@ -139,6 +168,7 @@ validator.extends({
   },
   custom: {
     message: '{#field}自定义校验规则失败：{custom}',
+    // 可返回 Promise<boolean>
     validator(value, ruleValue) {
       return (value as string).length > +ruleValue!
     }
@@ -165,7 +195,7 @@ import { Validator } from '@xuanmo/validator'
 import zhCN from '@xuanmo/validator/locale/zh-CN.json'
 const validator = new Validator()
 validator.localize(zhCN)
-// ... 
+// ...
 ```
 
 ## 鸣谢
