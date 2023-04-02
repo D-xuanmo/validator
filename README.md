@@ -23,6 +23,9 @@ $ pnpm add @xuanmo/validator
 ```
 
 ## 使用
+
+- [在线编辑 https://uoo.ink/2d906hs](https://uoo.ink/2d906hs) 与 [Element-plus](https://uoo.ink/jkgm4q) 表单结合使用
+
 ```typescript
 import validator from '@xuanmo/validator'
 
