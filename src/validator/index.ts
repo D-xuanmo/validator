@@ -68,6 +68,15 @@ class Validator {
   }
 
   /**
+   * 判断是否校验失败
+   * @param result 校验结果
+   * @return boolean true 代表校验未通过
+   */
+  private isValidateFail(result: unknown): boolean {
+    return (result as any) !== true
+  }
+
+  /**
    * 解析单条校验规则
    * @param rules 校验规则
    */
@@ -128,13 +137,11 @@ class Validator {
   /**
    * 范围校验规则
    * @param value 当前字段数据
-   * @param fieldName 当前字段对应 key
    * @param ruleModel 校验模型
    * @param context 校验上下文
    */
   private async scopeValidateHandler(
     value: unknown,
-    fieldName: string,
     ruleModel: ScopeValidateType,
     context: ValidateContextType
   ): Promise<boolean | ValidateErrorType> {
@@ -144,15 +151,13 @@ class Validator {
       result = this.regexpValidateHandler(value, ruleModel.regexp)
     }
     if (ruleModel.validator) {
-      result = isPromise(ruleModel.validator)
-        ? await ruleModel.validator?.(value, context)!
-        : ruleModel.validator?.(value, context) as boolean
+      result = ruleModel.validator?.(value, context) as boolean
+      if (isPromise(result)) {
+        result = await ruleModel.validator?.(value, context)!
+      }
     }
     if (!result) {
-      return {
-        message: ruleModel.message,
-        name: fieldName
-      }
+      return ruleModel.message
     }
     return true
   }
@@ -184,19 +189,17 @@ class Validator {
           result = this.regexpValidateHandler(value, validateModel.regexp)
         }
         if (validateModel.validator) {
-          result = isPromise(validateModel.validator)
-            ? await validateModel.validator?.(value, this.formatRuleParams(ruleParams), context)!
-            : validateModel.validator?.(value, this.formatRuleParams(ruleParams), context)! as boolean
+          result = validateModel.validator?.(value, this.formatRuleParams(ruleParams), context)! as boolean
+          if (isPromise(result)) {
+            result = await validateModel.validator?.(value, this.formatRuleParams(ruleParams), context)!
+          }
         }
         if (!result) {
-          errorResult = {
-            message: this.formatMessage(
-              validateModel.message,
-              fieldName,
-              this.formatRuleParams(ruleParams), validateModel.paramsEnum
-            ),
-            name: fieldName
-          }
+          errorResult = this.formatMessage(
+            validateModel.message,
+            fieldName,
+            this.formatRuleParams(ruleParams), validateModel.paramsEnum
+          )
           break
         }
       }
@@ -223,14 +226,11 @@ class Validator {
           let result: ValidateErrorType | boolean
           // 必填校验优先级最高
           if (rule.required && isEmpty(value)) {
-            result = {
-              name: fieldName,
-              message: this.formatMessage(this.validateModel.get('required')!.message, fieldName)
-            }
+            result = this.formatMessage(this.validateModel.get('required')!.message, fieldName)
           } else {
             // 如果当前数据存在局部校验规则，则不执行 rules 规则
             if (rest.regexp || rest.validator) {
-              result = await this.scopeValidateHandler(value, fieldName, rest as ScopeValidateType, {
+              result = await this.scopeValidateHandler(value, rest as ScopeValidateType, {
                 data
               })
             } else {
@@ -239,15 +239,15 @@ class Validator {
               })
             }
           }
-          if (isObject(result)) {
+          if (this.isValidateFail(result)) {
             if (!checkAll) {
-              reject(result)
+              reject({ [fieldName]: result })
             }
-            errorResult[(result as ValidateErrorType).name] = result as ValidateErrorType
+            errorResult[fieldName] = result as ValidateErrorType
           }
-          if (checkAll) {
-            reject(errorResult)
-          }
+        }
+        if (checkAll && isObject(errorResult)) {
+          reject(errorResult)
         }
         resolve(true)
       })()

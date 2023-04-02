@@ -23,17 +23,7 @@ export type ValidateReturnType = Promise<boolean | ValidateErrorType>
 /**
  * 校验是否返回类型
  */
-export type ValidateErrorType = {
-  /**
-   * 错误信息
-   */
-  message: string
-
-  /**
-   * 当前校验失败 key
-   */
-  name: string
-}
+export type ValidateErrorType = string
 
 /**
  * 校验数据模型
