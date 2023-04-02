@@ -9,6 +9,7 @@ import {
   ValidateContextType,
   ValidateDataModel,
   ValidateErrorType,
+  ValidateReturnType,
   ValidatorModelType,
   ValidatorRuleModel
 } from '../types'
@@ -84,8 +85,8 @@ class Validator {
   private formatMessage(
     message: string,
     fieldName: string,
-    ruleParams: RuleParamsType,
-    paramsEnum: SingleRuleType['paramsEnum']
+    ruleParams?: RuleParamsType,
+    paramsEnum?: SingleRuleType['paramsEnum']
   ) {
     let formatted = message.replace(/\{#field}/gi, fieldName)
     if (Array.isArray(ruleParams)) {
@@ -212,7 +213,7 @@ class Validator {
   validate = (data: ValidateDataModel, options?: {
     // 是否校验所有规则，默认：true，如果存在多个异步校验，不建议开启
     checkAll?: boolean
-  }): Promise<true | ValidateErrorType> => {
+  }): ValidateReturnType => {
     return new Promise((resolve, reject) => {
       (async () => {
         const { checkAll = true } = options ?? {}
@@ -220,15 +221,23 @@ class Validator {
         for (const [fieldName, rule] of Object.entries(data)) {
           const { value, ...rest } = rule
           let result: ValidateErrorType | boolean
-          // 如果当前数据存在范围校验，则不需要执行 rules 规则
-          if (rest.regexp || rest.validator) {
-            result = await this.scopeValidateHandler(value, fieldName, rest as ScopeValidateType, {
-              data
-            })
+          // 必填校验优先级最高
+          if (rule.required && isEmpty(value)) {
+            result = {
+              name: fieldName,
+              message: this.formatMessage(this.validateModel.get('required')!.message, fieldName)
+            }
           } else {
-            result = await this.validateHandler(value, fieldName, rest, {
-              data
-            })
+            // 如果当前数据存在局部校验规则，则不执行 rules 规则
+            if (rest.regexp || rest.validator) {
+              result = await this.scopeValidateHandler(value, fieldName, rest as ScopeValidateType, {
+                data
+              })
+            } else {
+              result = await this.validateHandler(value, fieldName, rest, {
+                data
+              })
+            }
           }
           if (isObject(result)) {
             if (!checkAll) {

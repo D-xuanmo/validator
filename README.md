@@ -4,8 +4,9 @@
 
 - `Validator` 是数据集验证工具，主打多个规则以管道符模式进行串行校验，常用于表单数据繁琐的校验
 - 用最少的代码，解决繁琐的事情
-- 支持校验规则扩展、单例模式、异步校验
-- 打包后体积 `6.5 KB`，Gzip 后体积 `2.5 KB`
+- 支持校验规则扩展、单例模式、异步校验、国际化
+- 完善的 `TypeScript` 类型
+- 打包后体积约 `6.5 KB`，Gzip 后体积约 `2.5 KB`
 - 规则快速预览： `required|email|length:8|between:2,8`
 
 ## 安装
@@ -40,6 +41,7 @@ validator
     },
     age: {
       value: 18,
+      required: true,
       rules: 'max:8'
     },
     scope: {

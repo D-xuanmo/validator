@@ -1,4 +1,49 @@
 /**
+ * 校验模型
+ */
+export type ValidatorModelType = ValidatorRuleModel & {
+  /**
+   * 校验规则，以管道符分隔，冒号后边的为校验规则值
+   * @example
+   * 'required|max:20'
+   */
+  rules?: string
+
+  /**
+   * 是否必填，与 rules 中的 required 等价
+   */
+  required?: boolean
+}
+
+/**
+ * 校验方法返回值
+ */
+export type ValidateReturnType = Promise<boolean | ValidateErrorType>
+
+/**
+ * 校验是否返回类型
+ */
+export type ValidateErrorType = {
+  /**
+   * 错误信息
+   */
+  message: string
+
+  /**
+   * 当前校验失败 key
+   */
+  name: string
+}
+
+/**
+ * 校验数据模型
+ */
+export type ValidateDataModel = Record<string, {
+  value: unknown
+  message?: string
+} & OmitObjectProperties<ValidatorModelType, 'message'>>
+
+/**
  * 所有内置的规则
  */
 export type RuleNames =
@@ -95,18 +140,6 @@ export type ValidatorHandlerType<TValue = unknown, TP = RuleParamsType> = (
 ) => boolean | Promise<boolean>
 
 /**
- * 校验模型
- */
-export type ValidatorModelType = ValidatorRuleModel & {
-  /**
-   * 校验规则，以管道符分隔，冒号后边的为校验规则值
-   * @example
-   * 'required|max:20'
-   */
-  rules?: string
-}
-
-/**
  * 范围校验，用于数据模型内的校验规则，优先级高于 rules
  */
 export type ScopeValidateType = OmitObjectProperties<ValidatorRuleModel, 'validator'> & {
@@ -117,26 +150,3 @@ export type ScopeValidateType = OmitObjectProperties<ValidatorRuleModel, 'valida
    */
   validator(value: unknown, context?: ValidateContextType): boolean | Promise<boolean>
 }
-
-/**
- * 校验是否返回类型
- */
-export type ValidateErrorType = {
-  /**
-   * 错误信息
-   */
-  message: string
-
-  /**
-   * 当前校验失败 key
-   */
-  name: string
-}
-
-/**
- * 校验数据模型
- */
-export type ValidateDataModel = Record<string, {
-  value: unknown
-  message?: string
-} & OmitObjectProperties<ValidatorModelType, 'message'>>
