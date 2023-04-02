@@ -29,7 +29,19 @@ export type ValidateErrorType = string
  * 校验数据模型
  */
 export type ValidateDataModel = Record<string, {
+  /**
+   * 当前字段值
+   */
   value: unknown
+
+  /**
+   * 用于覆盖 {#field} 标识
+   */
+  label?: string
+
+  /**
+   * 错误信息，优先级最高
+   */
   message?: string
 } & OmitObjectProperties<ValidatorModelType, 'message'>>
 

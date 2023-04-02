@@ -98,15 +98,18 @@ class Validator {
     paramsEnum?: SingleRuleType['paramsEnum']
   ) {
     let formatted = message.replace(/\{#field}/gi, fieldName)
+
     if (Array.isArray(ruleParams)) {
       if (isEmpty(paramsEnum)) throwError('validator', `The {${fieldName}} field validation rule parameter is not defined.`)
       ruleParams.forEach((item, index) => {
         formatted = formatted.replace(new RegExp(`\\{${paramsEnum![index].name}}`), item)
       })
     }
+
     if (typeof ruleParams === 'string') {
       formatted = formatted.replace(/\{[a-z]+}/i, ruleParams)
     }
+
     return formatted
   }
 
@@ -223,10 +226,11 @@ class Validator {
         const errorResult: Record<string, ValidateErrorType> = {}
         for (const [fieldName, rule] of Object.entries(data)) {
           const { value, ...rest } = rule
+          const aliasName = rule.label ?? fieldName
           let result: ValidateErrorType | boolean
           // 必填校验优先级最高
           if (rule.required && isEmpty(value)) {
-            result = this.formatMessage(this.validateModel.get('required')!.message, fieldName)
+            result = this.formatMessage(this.validateModel.get('required')!.message, aliasName)
           } else {
             // 如果当前数据存在局部校验规则，则不执行 rules 规则
             if (rest.regexp || rest.validator) {
@@ -234,12 +238,16 @@ class Validator {
                 data
               })
             } else {
-              result = await this.validateHandler(value, fieldName, rest, {
-                data
-              })
+              result = await this.validateHandler(
+                value,
+                aliasName,
+                rest,
+                { data }
+              )
             }
           }
           if (this.isValidateFail(result)) {
+            // 如果不是校验所有，遇见第一个错误则结束本次校验
             if (!checkAll) {
               reject({ [fieldName]: result })
             }
