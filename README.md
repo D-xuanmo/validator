@@ -165,7 +165,14 @@ import { Validator } from '@xuanmo/validator'
 import zhCN from '@xuanmo/validator/locale/zh-CN.json'
 const validator = new Validator()
 validator.localize(zhCN)
+// ... 
 ```
+
+## 鸣谢
+
+> Validator 的成长，离不开前辈的作品
+
+- 感谢 [vee-validate](https://github.com/logaretm/vee-validate) 提供的管道符校验模式
 
 ## License
 
