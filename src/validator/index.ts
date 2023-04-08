@@ -271,7 +271,7 @@ class Validator {
             errorResult[fieldName] = result as ValidateErrorType
           }
         }
-        if (checkAll && isObject(errorResult)) {
+        if (checkAll && isObject(errorResult) && !isEmpty(errorResult)) {
           reject(errorResult)
         }
         resolve(true)
