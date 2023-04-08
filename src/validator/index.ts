@@ -7,7 +7,7 @@ import {
   ScopeValidateType,
   SingleRuleType,
   ValidateContextType,
-  ValidateDataModel,
+  ValidateDataModel, ValidateDataModelItem,
   ValidateErrorType,
   ValidateReturnType,
   ValidatorModelType,
@@ -212,6 +212,20 @@ class Validator {
   }
 
   /**
+   * 转换校验数据，支持对象和数组两种模式
+   * @param data
+   */
+  private convertData = (data: ValidateDataModel): Array<ValidateDataModelItem> => {
+    if (isObject(data)) {
+      return Object.keys(data).map((name) => ({
+        name,
+        ...(data as any)[name]
+      }))
+    }
+    return data as Array<ValidateDataModelItem>
+  }
+
+  /**
    * 执行校验
    * @param data 校验数据
    * @param options
@@ -224,12 +238,15 @@ class Validator {
       (async () => {
         const { checkAll = true } = options ?? {}
         const errorResult: Record<string, ValidateErrorType> = {}
-        for (const [fieldName, rule] of Object.entries(data)) {
-          const { value, ...rest } = rule
-          const aliasName = rule.label ?? fieldName
+        const convertedData = this.convertData(data)
+        for (let i = 0; i < convertedData.length; i++) {
+          const item = convertedData[i]
+          const fieldName = item.name
+          const { value, ...rest } = item
+          const aliasName = item.label ?? fieldName
           let result: ValidateErrorType | boolean
           // 必填校验优先级最高
-          if (rule.required && isEmpty(value)) {
+          if (item.required && isEmpty(value)) {
             result = this.formatMessage(this.validateModel.get('required')!.message, aliasName)
           } else {
             // 如果当前数据存在局部校验规则，则不执行 rules 规则

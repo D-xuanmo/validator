@@ -25,10 +25,12 @@ export type ValidateReturnType = Promise<boolean | ValidateErrorType>
  */
 export type ValidateErrorType = string
 
-/**
- * 校验数据模型
- */
-export type ValidateDataModel = Record<string, {
+export type ValidateDataModelItem = {
+  /**
+   * 数据对应的键值
+   */
+  name: string
+
   /**
    * 当前字段值
    */
@@ -43,7 +45,14 @@ export type ValidateDataModel = Record<string, {
    * 错误信息，优先级最高
    */
   message?: string
-} & OmitObjectProperties<ValidatorModelType, 'message'>>
+} & OmitObjectProperties<ValidatorModelType, 'message'>
+
+/**
+ * 校验数据模型
+ */
+export type ValidateDataModel =
+  | Record<string, OmitObjectProperties<ValidateDataModelItem, 'name'> & { name?: string }>
+  | Array<ValidateDataModelItem>
 
 /**
  * 所有内置的规则
