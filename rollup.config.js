@@ -28,17 +28,20 @@ export default {
     {
       file: 'dist/validator.esm.js',
       format: 'es',
+      sourcemap: true,
     },
     {
       file: 'dist/validator.cjs.js',
       format: 'cjs',
       name: 'validator',
+      sourcemap: true,
       exports: 'named'
     },
     {
       file: 'dist/validator.umd.js',
       format: 'umd',
       name: 'validator',
+      sourcemap: true,
       exports: 'named'
     }
   ]

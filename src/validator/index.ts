@@ -201,12 +201,13 @@ class Validator {
           errorResult = this.formatMessage(
             validateModel.message,
             fieldName,
-            this.formatRuleParams(ruleParams), validateModel.paramsEnum
+            this.formatRuleParams(ruleParams),
+            validateModel.paramsEnum
           )
           break
         }
       }
-      return errorResult as ValidateErrorType
+      return errorResult === null ? true : errorResult
     }
     return true
   }

@@ -1,6 +1,6 @@
 {
   "name": "@xuanmo/validator",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "用最少的代码，解决繁琐的事情",
   "private": false,
   "main": "dist/validator.cjs.js",
