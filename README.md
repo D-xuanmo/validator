@@ -29,10 +29,10 @@ $ pnpm add @xuanmo/validator
 ```typescript
 import validator from '@xuanmo/validator'
 
-// 默认不注册多语言，需要引入多语言文件自行注册
+// 默认不注册国际化词条，需要引入国际化词条文件自行注册
 import zhCN from '@xuanmo/validator/locale/zh-CN.json'
 
-// 注册多语言
+// 注册国际化词条
 validator.localize(zhCN)
 
 // 执行校验
@@ -139,7 +139,7 @@ type ValidateType = (
 
 > validate.field.message > rule.message
 
-### localize 多语言注册
+### localize 国际化词条注册
 
 ```typescript
 import zhCN from '@xuanmo/validator/locale/zh-CN.json'

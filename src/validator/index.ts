@@ -58,6 +58,9 @@ class Validator {
    * 解析内置校验规则
    */
   private resolveDefaultRules = () => {
+    if (!this.locale) {
+      throwError('validator', '未注册国际化词条，参考链接：https://github.com/D-xuanmo/validator#%E4%BD%BF%E7%94%A8')
+    }
     for (const [key, value] of Object.entries(rules)) {
       this.extend(key, {
         message: (this.locale as never)[key],
