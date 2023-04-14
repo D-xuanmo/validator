@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import { babel } from '@rollup/plugin-babel'
 import terser from '@rollup/plugin-terser'
 import fileSize from 'rollup-plugin-filesize'
+import buildRules from './rollup-plugins/index.js'
 
 export default {
   input: 'src/main.ts',
@@ -22,13 +23,14 @@ export default {
         drop_console: process.env.NODE_ENV === 'prod'
       }
     }),
-    fileSize()
+    fileSize(),
+    buildRules()
   ],
   output: [
     {
       file: 'dist/validator.esm.js',
       format: 'es',
-      sourcemap: true,
+      sourcemap: true
     },
     {
       file: 'dist/validator.cjs.js',

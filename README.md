@@ -178,6 +178,8 @@ validator.extends({
 
 ### rules 内置规则
 
+> 更多规则可以从 `@xuanmo/validator/rules/{type}/*.js` 导出进行注册，默认不打包
+
 - `required` 必填校验
 - `email` 邮箱
 - `length` 长度，示例：`length:2`
