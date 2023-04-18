@@ -8,6 +8,7 @@ import numberRule from './number'
 import integerRule from './integer'
 import floatRule from './float'
 import betweenRule from './between'
+import confirmedRule from './confirmed'
 
 const rules: Record<RuleNames, SingleRuleType> = {
   required: requiredRule,
@@ -18,7 +19,8 @@ const rules: Record<RuleNames, SingleRuleType> = {
   number: numberRule,
   integer: integerRule,
   float: floatRule,
-  between: betweenRule as any
+  between: betweenRule as any,
+  confirmed: confirmedRule as any
 }
 
 export default rules

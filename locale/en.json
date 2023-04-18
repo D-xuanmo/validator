@@ -9,6 +9,7 @@
     "number": "The {#field} field can only contain numbers",
     "integer": "The {#field} field is not an integer",
     "float": "The {#field} field is not a floating point number",
-    "between": "The {#field} must be between {min} and {max}"
+    "between": "The {#field} must be between {min} and {max}",
+    "confirmed": "The {#field} field does not match {target}"
   }
 }

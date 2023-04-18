@@ -67,6 +67,7 @@ export type RuleNames =
   | 'integer'
   | 'float'
   | 'between'
+  | 'confirmed'
 
 /**
  * 国际化列表
@@ -114,7 +115,7 @@ export type ValidateContextType = {
   /**
    * 当前校验的所有数据
    */
-  data: Readonly<ValidateDataModel>
+  data: Readonly<Array<ValidateDataModelItem>>
 }
 
 /**

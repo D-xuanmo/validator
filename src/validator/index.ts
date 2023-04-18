@@ -7,7 +7,8 @@ import {
   ScopeValidateType,
   SingleRuleType,
   ValidateContextType,
-  ValidateDataModel, ValidateDataModelItem,
+  ValidateDataModel,
+  ValidateDataModelItem,
   ValidateErrorType,
   ValidateReturnType,
   ValidatorModelType,
@@ -33,6 +34,7 @@ class Validator {
   localize = (locale: LocaleMessageType) => {
     this.locale = locale.message
     this.resolveDefaultRules()
+    return this
   }
 
   /**
@@ -42,6 +44,7 @@ class Validator {
    */
   extend = (name: string, rules: ValidatorRuleModel) => {
     this.validateModel.set(name, rules)
+    return this
   }
 
   /**
@@ -52,6 +55,7 @@ class Validator {
     for (const [key, value] of Object.entries(rules)) {
       this.extend(key, value)
     }
+    return this
   }
 
   /**
@@ -103,7 +107,9 @@ class Validator {
     let formatted = message.replace(/\{#field}/gi, fieldName)
 
     if (Array.isArray(ruleParams)) {
-      if (isEmpty(paramsEnum)) throwError('validator', `The {${fieldName}} field validation rule parameter is not defined.`)
+      if (isEmpty(paramsEnum)) {
+        throwError('validator', `The {${fieldName}} field validation rule parameter is not defined.`)
+      }
       ruleParams.forEach((item, index) => {
         formatted = formatted.replace(new RegExp(`\\{${paramsEnum![index].name}}`), item)
       })
@@ -256,14 +262,14 @@ class Validator {
             // 如果当前数据存在局部校验规则，则不执行 rules 规则
             if (rest.regexp || rest.validator) {
               result = await this.scopeValidateHandler(value, rest as ScopeValidateType, {
-                data
+                data: convertedData
               })
             } else {
               result = await this.validateHandler(
                 value,
                 aliasName,
                 rest,
-                { data }
+                { data: convertedData }
               )
             }
           }

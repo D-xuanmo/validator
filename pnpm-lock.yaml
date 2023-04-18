@@ -12,7 +12,7 @@ specifiers:
   '@rollup/plugin-typescript': ^11.0.0
   '@typescript-eslint/eslint-plugin': ^5.56.0
   '@typescript-eslint/parser': ^5.56.0
-  '@xuanmo/javascript-utils': ^0.0.43
+  '@xuanmo/javascript-utils': ^0.0.46
   cross-env: ^7.0.3
   eslint: ^8.36.0
   husky: ^8.0.3
@@ -34,7 +34,7 @@ devDependencies:
   '@rollup/plugin-typescript': 11.0.0_b72j35qsjh4lu3mgicjyqmc4ve
   '@typescript-eslint/eslint-plugin': 5.56.0_2hcjazgfnbtq42tcc73br2vup4
   '@typescript-eslint/parser': 5.56.0_j4766f7ecgqbon3u7zlxn5zszu
-  '@xuanmo/javascript-utils': 0.0.43
+  '@xuanmo/javascript-utils': 0.0.46
   cross-env: 7.0.3
   eslint: 8.36.0
   husky: 8.0.3
@@ -1703,8 +1703,8 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@xuanmo/javascript-utils/0.0.43:
-    resolution: {integrity: sha512-IPvxJMPAs6nZNZjRV1uqEuDc9lb6wWNquxelDbGiNJw9BestSRTmoyKzpXKtf5a12ilMZIw2mAntpwFBXb/QYQ==}
+  /@xuanmo/javascript-utils/0.0.46:
+    resolution: {integrity: sha512-o6n+fh12vgnBj6+8sP4qO9Xcs8NWYIxBmW8MsFMNkNkRGLMLEXctlWWn2F2ci6jArF22oDTdm5v/Bf6HNXovsQ==}
     dev: true
 
   /abbrev/1.1.1:
