@@ -189,6 +189,11 @@ validator.extends({
 - `float` 浮点数
 - `integer` 整数
 - `between` 数值区间
+- `confirmed` 二次确认，如密码场景，示例：`confirmed:target`
+- `alpha` 只能包含字母
+- `alpha_num` 只能包含字母数字
+- `alpha_spaces` 只能包含字母空格
+- `url` URL
 
 ## 单例模式
 

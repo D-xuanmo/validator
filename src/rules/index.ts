@@ -9,6 +9,10 @@ import integerRule from './integer'
 import floatRule from './float'
 import betweenRule from './between'
 import confirmedRule from './confirmed'
+import alphaRule from './alpha'
+import alphaNumRule from './alpha_num'
+import alphaSpacesRule from './alpha_spaces'
+import urlRule from './url'
 
 const rules: Record<RuleNames, SingleRuleType> = {
   required: requiredRule,
@@ -20,7 +24,11 @@ const rules: Record<RuleNames, SingleRuleType> = {
   integer: integerRule,
   float: floatRule,
   between: betweenRule as any,
-  confirmed: confirmedRule as any
+  confirmed: confirmedRule as any,
+  alpha: alphaRule,
+  alpha_num: alphaNumRule,
+  alpha_spaces: alphaSpacesRule,
+  url: urlRule
 }
 
 export default rules

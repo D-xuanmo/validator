@@ -10,6 +10,10 @@
     "integer": "The {#field} field is not an integer",
     "float": "The {#field} field is not a floating point number",
     "between": "The {#field} must be between {min} and {max}",
-    "confirmed": "The {#field} field does not match {target}"
+    "confirmed": "The {#field} field does not match {target}",
+    "alpha": "The {#field} field may only contain alphabetic characters",
+    "alpha_num": "The {#field} field may only contain alpha-numeric characters",
+    "alpha_spaces": "The {#field} field may only contain alphabetic characters as well as spaces",
+    "url": "The {#field} field not a qualified URL"
   }
 }

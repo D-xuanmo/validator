@@ -68,6 +68,10 @@ export type RuleNames =
   | 'float'
   | 'between'
   | 'confirmed'
+  | 'alpha'
+  | 'alpha_num'
+  | 'alpha_spaces'
+  | 'url'
 
 /**
  * 国际化列表

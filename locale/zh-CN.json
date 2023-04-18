@@ -10,6 +10,10 @@
     "integer": "{#field}不是一个整数",
     "float": "{#field}不是一个浮点数",
     "between": "{#field}必须在{min}与{max}之间",
-    "confirmed": "{#field}与{target}不匹配"
+    "confirmed": "{#field}与{target}不匹配",
+    "alpha": "{#field}只能包含字母字符",
+    "alpha_num": "{#field}只能包含字母数字字符",
+    "alpha_spaces": "{#field}只能包含字母字符和空格",
+    "url": "{#field}不是合格的 URL"
   }
 }
