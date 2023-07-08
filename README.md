@@ -38,24 +38,27 @@ validator.localize(zhCN)
 
 // 执行校验
 validator
-  .validate({
-    name: {
+  .validate([
+    {
+      dataKey: 'name',
       value: 'xuanmo',
       rules: 'required|max:5'
     },
-    age: {
+    {
+      dataKey: 'age',
       value: 18,
       required: true,
       rules: 'max:8'
     },
-    scope: {
+    {
+      dataKey: 'scope',
       value: '',
       message: '局部校验规则失败',
       validator() {
         return false
       }
     }
-  })
+  ])
   .then(() => {
     console.log('校验通过')
   })
@@ -77,31 +80,34 @@ validator
 ```typescript
 // 以 `length` 规则为例，错误信息定义：{#field}长度必须为:{length}
 // 最终执行结果被替换为：name长度必须为:5
-validator.validate({
-  name: {
+validator.validate([
+  {
+    dataKey: 'name',
     value: 'xuanmo',
     rules: 'length:5'
   }
-})
+])
 ```
 
 ### validate 执行校验
 
 ```typescript
 import validator from '@xuanmo/validator'
-validator.validate({
-  name: {
+validator.validate([
+  {
+    dataKey: 'name',
     value: 'xuanmo',
     rules: 'length:5|between:2,8'
   },
-  scope: {
+  {
+    dataKey: 'scope',
     value: 'xuanmo',
     // 局部校验规则，优先级最高，不会执行 rules 模式
     validator(value) {
       return false
     }
   }
-})
+])
 ```
 
 #### Rule 结构说明
