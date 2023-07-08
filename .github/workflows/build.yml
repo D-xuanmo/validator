@@ -4,7 +4,7 @@ on:
   push:
     paths:
      - 'package.json'
-     - '.github/workflows/node.js.yml'
+     - '.github/workflows/build.yml'
 
 jobs:
   build:
@@ -24,17 +24,10 @@ jobs:
     - run: pnpm i
     - run: pnpm build
 
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - run: pnpm test
+    # 单元测试
+    - run: pnpm test
 
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    - run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
