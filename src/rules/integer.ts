@@ -1,4 +1,4 @@
-import { isInteger } from '@xuanmo/javascript-utils'
+import { isInteger } from '@xuanmo/utils'
 import { SingleRuleType } from '../types'
 
 const rule: SingleRuleType = {

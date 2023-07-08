@@ -29,7 +29,7 @@ export type ValidateDataModelItem = {
   /**
    * 数据对应的键值
    */
-  name: string
+  dataKey: string
 
   /**
    * 当前字段值
@@ -51,7 +51,7 @@ export type ValidateDataModelItem = {
  * 校验数据模型
  */
 export type ValidateDataModel =
-  | Record<string, OmitObjectProperties<ValidateDataModelItem, 'name'> & { name?: string }>
+  | Record<string, OmitObjectProperties<ValidateDataModelItem, 'dataKey'> & { dataKey?: string }>
   | Array<ValidateDataModelItem>
 
 /**

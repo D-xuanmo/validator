@@ -1,4 +1,4 @@
-import { isFloatNumber } from '@xuanmo/javascript-utils'
+import { isFloatNumber } from '@xuanmo/utils'
 import { SingleRuleType } from '../types'
 
 const rule: SingleRuleType = {

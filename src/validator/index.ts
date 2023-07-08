@@ -1,5 +1,5 @@
 import rules from '../rules'
-import { isEmpty, isObject, isPromise, throwError } from '@xuanmo/javascript-utils'
+import { isEmpty, isObject, isPromise, throwError } from '@xuanmo/utils'
 import {
   LocaleMessageType,
   OmitObjectProperties,
@@ -251,7 +251,7 @@ class Validator {
         const convertedData = this.convertData(data)
         for (let i = 0; i < convertedData.length; i++) {
           const item = convertedData[i]
-          const fieldName = item.name
+          const fieldName = item.dataKey
           const { value, ...rest } = item
           const aliasName = item.label ?? fieldName
           let result: ValidateErrorType | boolean

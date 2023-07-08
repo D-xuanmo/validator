@@ -1,4 +1,4 @@
-import { isEmpty } from '@xuanmo/javascript-utils'
+import { isEmpty } from '@xuanmo/utils'
 import { SingleRuleType } from '../types'
 
 const rule: SingleRuleType<number, string[]> = {
