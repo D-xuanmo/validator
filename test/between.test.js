@@ -24,5 +24,10 @@ test('between', async () => {
       value: 100,
       rules: 'between:2,20'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "between2": "between2必须在2与2之间",
+      "between3": "between3必须在2与20之间",
+    }
+  `)
 })

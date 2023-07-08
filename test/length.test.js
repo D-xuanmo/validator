@@ -19,5 +19,9 @@ test('length', async () => {
       value: 'me',
       rules: 'length:8'
     }
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "length2": "length2长度必须为8",
+    }
+  `)
 })

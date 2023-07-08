@@ -26,5 +26,9 @@ test('url', async () => {
       value: '22',
       rules: 'url'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "url3": "url3不是合格的 URL",
+    }
+  `)
 })

@@ -31,5 +31,11 @@ test('alpha', async () => {
       value: 'a_1',
       rules: 'alpha'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "alpha2": "alpha2只能包含字母字符",
+      "alpha3": "alpha3只能包含字母字符",
+      "alpha4": "alpha4只能包含字母字符",
+    }
+  `)
 })

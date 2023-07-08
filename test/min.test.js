@@ -19,5 +19,9 @@ test('min', async () => {
       value: 1,
       rules: 'min:5'
     }
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "min2": "min2不能小于5",
+    }
+  `)
 })

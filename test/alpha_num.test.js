@@ -31,5 +31,10 @@ test('alpha_num', async () => {
       value: '错误',
       rules: 'alpha_num'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "alpha_num3": "alpha_num3只能包含字母数字字符",
+      "alpha_num4": "alpha_num4只能包含字母数字字符",
+    }
+  `)
 })

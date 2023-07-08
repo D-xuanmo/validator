@@ -24,5 +24,9 @@ test('number', async () => {
       value: '3q',
       rules: 'number'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "number3": "number3只能包含数字",
+    }
+  `)
 })

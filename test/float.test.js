@@ -24,5 +24,10 @@ test('float', async () => {
       value: 222,
       rules: 'float'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "float2": "float2不是一个浮点数",
+      "float3": "float3不是一个浮点数",
+    }
+  `)
 })

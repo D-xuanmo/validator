@@ -5,6 +5,7 @@ on:
     paths:
      - 'package.json'
      - '.github/workflows/build.yml'
+     - 'test/*.js'
 
 jobs:
   build:

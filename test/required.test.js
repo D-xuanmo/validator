@@ -21,5 +21,9 @@ test('required', async () => {
       value: '',
       rules: 'required'
     }
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "required2": "required2不能为空",
+    }
+  `)
 })

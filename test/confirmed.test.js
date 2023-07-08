@@ -29,5 +29,9 @@ test('confirmed', async () => {
       value: '1',
       rules: 'confirmed:confirmed3'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "confirmed4": "confirmed4与confirmed3不匹配",
+    }
+  `)
 })

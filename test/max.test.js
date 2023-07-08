@@ -19,5 +19,9 @@ test('max', async () => {
       value: 18,
       rules: 'max:5'
     }
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "max2": "max2不能大于5",
+    }
+  `)
 })

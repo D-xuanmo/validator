@@ -24,5 +24,10 @@ test('integer', async () => {
       value: 222.22,
       rules: 'integer'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "integer2": "integer2不是一个整数",
+      "integer3": "integer3不是一个整数",
+    }
+  `)
 })

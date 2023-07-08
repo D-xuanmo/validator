@@ -31,5 +31,10 @@ test('alpha_spaces', async () => {
       value: '错误',
       rules: 'alpha_spaces'
     },
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "alpha_spaces3": "alpha_spaces3只能包含字母字符和空格",
+      "alpha_spaces4": "alpha_spaces4只能包含字母字符和空格",
+    }
+  `)
 })

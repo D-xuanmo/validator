@@ -19,5 +19,9 @@ test('email', async () => {
       value: 'me',
       rules: 'email'
     }
-  ])).rejects.toMatchSnapshot()
+  ])).rejects.toMatchInlineSnapshot(`
+    {
+      "email2": "email2不是一个有效的邮箱",
+    }
+  `)
 })
