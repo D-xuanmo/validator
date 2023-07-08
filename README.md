@@ -1,4 +1,4 @@
-# Validator [![Node.js CI](https://github.com/D-xuanmo/validator/actions/workflows/node.js.yml/badge.svg)](https://github.com/D-xuanmo/validator/actions/workflows/node.js.yml)
+# Validator [![Node.js CI](https://github.com/D-xuanmo/validator/actions/workflows/build.yml/badge.svg)](https://github.com/D-xuanmo/validator/actions/workflows/build.yml)
 
 ## 简介
 
