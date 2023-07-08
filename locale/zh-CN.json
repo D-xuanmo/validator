@@ -3,9 +3,9 @@
   "message": {
     "required": "{#field}不能为空",
     "email": "{#field}不是一个有效的邮箱",
-    "length": "{#field}长度必须为:{length}",
-    "min": "{#field}不能小于:{min}",
-    "max": "{#field}不能大于:{max}",
+    "length": "{#field}长度必须为{length}",
+    "min": "{#field}不能小于{min}",
+    "max": "{#field}不能大于{max}",
     "number": "{#field}只能包含数字",
     "integer": "{#field}不是一个整数",
     "float": "{#field}不是一个浮点数",
