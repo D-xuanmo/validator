@@ -12,6 +12,8 @@
     "declarationMap": false,
     "moduleResolution": "Node",
     "isolatedModules": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
     "lib": [
       "dom",
       "dom.iterable",

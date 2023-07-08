@@ -7,7 +7,7 @@ on:
      - '.github/workflows/node.js.yml'
 
 jobs:
-  publish-npm:
+  build:
     runs-on: macos-latest
 
     # 任务的步骤
@@ -23,8 +23,18 @@ jobs:
 
     - run: pnpm i
     - run: pnpm build
-    - run: npm publish --access public
 
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: pnpm test
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
