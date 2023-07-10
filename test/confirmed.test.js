@@ -15,23 +15,25 @@ test('confirmed', async () => {
       dataKey: 'confirmed2',
       value: '123456',
       rules: 'confirmed:confirmed1'
-    },
+    }
   ])).resolves.toBe(true)
 
   // 校验未通过
   await expect(validator.validate([
     {
       dataKey: 'confirmed3',
-      value: '123456'
+      value: '123456',
+      label: '密码'
     },
     {
       dataKey: 'confirmed4',
       value: '1',
-      rules: 'confirmed:confirmed3'
-    },
+      rules: 'confirmed:@confirmed3',
+      label: '二次确认密码'
+    }
   ])).rejects.toMatchInlineSnapshot(`
     {
-      "confirmed4": "confirmed4与confirmed3不匹配",
+      "confirmed4": "二次确认密码与密码不匹配",
     }
   `)
 })

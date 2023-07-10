@@ -14,7 +14,7 @@ import {
   ValidatorModelType,
   ValidatorRuleModel
 } from '../types'
-import { RULE_PARAMS_SEPARATOR } from './constants'
+import { RELATED_FIELD_SEPARATOR, RULE_PARAMS_SEPARATOR } from './constants'
 
 class Validator {
   /**
@@ -23,7 +23,7 @@ class Validator {
   private locale: LocaleMessageType['message'] | null = null
 
   /**
-   * 校验模型
+   * 校验规则模型
    */
   private validateModel: Map<string, ValidatorRuleModel> = new Map()
 
@@ -95,15 +95,18 @@ class Validator {
    * 格式化错误信息
    * @param message 错误信息
    * @param fieldName 当前字段
-   * @param ruleParams 校验规则参数
-   * @param paramsEnum 参数映射
+   * @param options
    */
   private formatMessage(
     message: string,
     fieldName: string,
-    ruleParams?: RuleParamsType,
-    paramsEnum?: SingleRuleType['paramsEnum']
+    options?: {
+      ruleParams?: RuleParamsType,
+      paramsEnum?: SingleRuleType['paramsEnum'],
+      context?: ValidateContextType
+    }
   ) {
+    const { ruleParams, paramsEnum, context } = options ?? {}
     let formatted = message.replace(/\{#field}/gi, fieldName)
 
     if (Array.isArray(ruleParams)) {
@@ -116,7 +119,12 @@ class Validator {
     }
 
     if (typeof ruleParams === 'string') {
-      formatted = formatted.replace(/\{[a-z]+}/i, ruleParams)
+      let replaceValue = ruleParams
+      if (new RegExp(`^${RELATED_FIELD_SEPARATOR}`).test(ruleParams)) {
+        const item = context?.dataKeyMap.get(ruleParams.replace(RELATED_FIELD_SEPARATOR, ''))
+        replaceValue = item?.label || item?.dataKey || ''
+      }
+      formatted = formatted.replace(/\{[a-z]+}/i, replaceValue)
     }
 
     return formatted
@@ -210,8 +218,11 @@ class Validator {
           errorResult = this.formatMessage(
             validateModel.message,
             fieldName,
-            this.formatRuleParams(ruleParams),
-            validateModel.paramsEnum
+            {
+              ruleParams: this.formatRuleParams(ruleParams),
+              paramsEnum: validateModel.paramsEnum,
+              context
+            }
           )
           break
         }
@@ -235,6 +246,14 @@ class Validator {
     return data as Array<ValidateDataModelItem>
   }
 
+  private convertDataToMap = (data: Array<ValidateDataModelItem>) => {
+    const dataKeyMap: ValidateContextType['dataKeyMap'] = new Map()
+    data.forEach((item) => {
+      dataKeyMap.set(item.dataKey, item)
+    })
+    return dataKeyMap
+  }
+
   /**
    * 执行校验
    * @param data 校验数据
@@ -249,6 +268,7 @@ class Validator {
         const { checkAll = true } = options ?? {}
         const errorResult: Record<string, ValidateErrorType> = {}
         const convertedData = this.convertData(data)
+        const dataKeyMap = this.convertDataToMap(convertedData)
         for (let i = 0; i < convertedData.length; i++) {
           const item = convertedData[i]
           const fieldName = item.dataKey
@@ -262,14 +282,15 @@ class Validator {
             // 如果当前数据存在局部校验规则，则不执行 rules 规则
             if (rest.regexp || rest.validator) {
               result = await this.scopeValidateHandler(value, rest as ScopeValidateType, {
-                data: convertedData
+                data: convertedData,
+                dataKeyMap
               })
             } else {
               result = await this.validateHandler(
                 value,
                 aliasName,
                 rest,
-                { data: convertedData }
+                { data: convertedData, dataKeyMap }
               )
             }
           }

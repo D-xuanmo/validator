@@ -115,11 +115,19 @@ export type OmitObjectProperties<T extends object, K extends keyof T> = {
   [Key in keyof T as Key extends K ? never : Key]: T[Key]
 }
 
+/**
+ * 当前校验上下文对象
+ */
 export type ValidateContextType = {
   /**
    * 当前校验的所有数据
    */
   data: Readonly<Array<ValidateDataModelItem>>
+
+  /**
+   * 当前校验数据的 map 结构，与 data 等价
+   */
+  dataKeyMap: Map<string, ValidateDataModelItem>
 }
 
 /**
@@ -137,6 +145,10 @@ export type SingleRuleType<TValue = unknown, TP = RuleParamsType> = {
 
   /**
    * 参数枚举
+   * @example
+   * [
+   *  { name: 'max' }
+   * ]
    */
   paramsEnum?: Array<{
     name: string
