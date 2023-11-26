@@ -1,4 +1,8 @@
-# Validator [![Node.js CI](https://github.com/D-xuanmo/validator/actions/workflows/build.yml/badge.svg)](https://github.com/D-xuanmo/validator/actions/workflows/build.yml)
+# Validator
+
+[![Node.js CI](https://github.com/D-xuanmo/validator/actions/workflows/build.yml/badge.svg)](https://github.com/D-xuanmo/validator/actions/workflows/build.yml)
+![npm bundle size](https://img.shields.io/bundlephobia/min/%40xuanmo%2Fvalidator)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/%40xuanmo%2Fvalidator)
 
 ## 简介
 
@@ -6,7 +10,6 @@
 - 用最少的代码，解决繁琐的事情
 - 支持校验规则扩展、单例模式、异步校验、国际化
 - 完善的 `TypeScript` 类型
-- 打包后体积约 `7 KB`，Gzip 后体积约 `2.5 KB`
 - 规则快速预览： `required|email|length:8|between:2,8`
 
 ## 安装
@@ -93,6 +96,7 @@ validator.validate([
 
 ```typescript
 import validator from '@xuanmo/validator'
+
 validator.validate([
   {
     dataKey: 'name',
@@ -123,6 +127,7 @@ validator.validate([
 |validator|(非必须)校验函数权重高于 `rules`，一般只有全局中无匹配规则时使用|`ValidatorHandlerType`|
 
 #### TS 类型
+
 ```typescript
 /**
  * 执行校验
@@ -150,6 +155,7 @@ type ValidateType = (
 
 ```typescript
 import zhCN from '@xuanmo/validator/locale/zh-CN.json'
+
 validator.localize(zhCN)
 ```
 
@@ -167,6 +173,7 @@ validator.extend('custom', {
 ```
 
 #### extends 多个规则同时注册
+
 ```typescript
 validator.extends({
   regexp: {
@@ -207,6 +214,7 @@ validator.extends({
 ```typescript
 import { Validator } from '@xuanmo/validator'
 import zhCN from '@xuanmo/validator/locale/zh-CN.json'
+
 const validator = new Validator()
 validator.localize(zhCN)
 // ...
