@@ -4,6 +4,8 @@
     "required": "{#field}不能为空",
     "email": "{#field}格式错误",
     "length": "{#field}长度必须为{length}",
+    "min_length": "{#field}长度不能小于{length}",
+    "max_length": "{#field}长度不能大于{length}",
     "min": "{#field}不能小于{min}",
     "max": "{#field}不能大于{max}",
     "number": "{#field}只能包含数字",

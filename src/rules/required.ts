@@ -1,8 +1,6 @@
 import { isEmpty } from '@xuanmo/utils'
 import { SingleRuleType } from '../types'
 
-const rule: SingleRuleType = {
+export const required: SingleRuleType = {
   validator: (value: unknown) => !isEmpty(value)
 }
-
-export default rule

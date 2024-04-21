@@ -1,16 +1,14 @@
 import { isEmpty } from '@xuanmo/utils'
 import { SingleRuleType } from '../types'
 
-const rule: SingleRuleType<number, string[]> = {
+export const between: SingleRuleType<number, string[]> = {
   paramsEnum: [
     { name: 'min' },
-    { name: 'max' },
+    { name: 'max' }
   ],
-  validator: (value, params = []) => {
+  validator: (value, { ruleValue = [] }) => {
     if (isEmpty(value)) return true
 
-    return value >= Number(params[0]) && value <= Number(params[1])
+    return value >= Number(ruleValue[0]) && value <= Number(ruleValue[1])
   }
 }
-
-export default rule

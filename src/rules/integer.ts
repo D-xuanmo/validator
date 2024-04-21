@@ -1,8 +1,6 @@
 import { isInteger } from '@xuanmo/utils'
 import { SingleRuleType } from '../types'
 
-const rule: SingleRuleType = {
+export const integer: SingleRuleType = {
   validator: (value: unknown) => isInteger(value)
 }
-
-export default rule

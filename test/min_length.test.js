@@ -4,24 +4,24 @@ import zhCN from '../locale/zh-CN.json'
 
 validator.localize(zhCN)
 
-test('email', async () => {
+test('min_length', async () => {
   await expect(validator.validate([
     {
-      dataKey: 'email1',
-      value: 'me@xuanmo.xin',
-      rules: 'email'
+      dataKey: 'length1',
+      value: 'xuanmo',
+      rules: 'min_length:6'
     }
   ])).resolves.toBe(true)
 
   await expect(validator.validate([
     {
-      dataKey: 'email2',
+      dataKey: 'length2',
       value: 'me',
-      rules: 'email'
+      rules: 'min_length:8'
     }
   ])).rejects.toMatchInlineSnapshot(`
     {
-      "email2": "email2格式错误",
+      "length2": "length2长度不能小于8",
     }
   `)
 })

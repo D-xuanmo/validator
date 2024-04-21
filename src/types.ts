@@ -60,6 +60,8 @@ export type ValidateDataModel =
 export type RuleNames =
   | 'required'
   | 'length'
+  | 'min_length'
+  | 'max_length'
   | 'email'
   | 'min'
   | 'max'
@@ -163,8 +165,17 @@ export type SingleRuleType<TValue = unknown, TP = RuleParamsType> = {
  */
 export type ValidatorHandlerType<TValue = unknown, TP = RuleParamsType> = (
   value: TValue,
-  ruleParams?: TP,
-  context?: ValidateContextType
+  options: ValidateContextType & {
+    /**
+     * 链接字段
+     */
+    linkField?: string | string[]
+
+    /**
+     * 规则参数
+     */
+    ruleValue?: TP
+  }
 ) => boolean | Promise<boolean>
 
 /**

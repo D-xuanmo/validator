@@ -1,13 +1,11 @@
 import { SingleRuleType } from '../types'
 
-const rule: SingleRuleType<unknown, string> = {
-  validator(value, ruleParams, context) {
+export const confirmed: SingleRuleType<unknown, string> = {
+  validator(value, { linkField, dataKeyMap }) {
     if (!value) return true
 
-    const target = context?.data?.find((item) => item.dataKey === ruleParams)
+    const target = dataKeyMap.get(linkField as string)
 
     return value === target?.value
   }
 }
-
-export default rule

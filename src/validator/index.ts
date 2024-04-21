@@ -1,8 +1,8 @@
-import rules from '../rules'
+import * as rules from '../rules'
 import { isEmpty, isObject, isPromise, throwError } from '@xuanmo/utils'
 import {
   LocaleMessageType,
-  OmitObjectProperties,
+  OmitObjectProperties, RuleNames,
   RuleParamsType,
   ScopeValidateType,
   SingleRuleType,
@@ -65,7 +65,7 @@ class Validator {
     if (!this.locale) {
       throwError('validator', '未注册国际化词条，参考链接：https://github.com/D-xuanmo/validator#%E4%BD%BF%E7%94%A8')
     }
-    for (const [key, value] of Object.entries(rules)) {
+    for (const [key, value] of Object.entries(rules as Record<RuleNames, SingleRuleType>)) {
       this.extend(key, {
         message: (this.locale as never)[key],
         validator: value.validator,
@@ -155,6 +155,24 @@ class Validator {
   }
 
   /**
+   * 关联字段解析
+   * @param params
+   */
+  private formatLinkField(params?: string) {
+    let result
+
+    if (params?.includes(RELATED_FIELD_SEPARATOR)) {
+      result = (params as string).replace(new RegExp(RELATED_FIELD_SEPARATOR, 'g'), '')
+    }
+
+    if (result?.includes(RULE_PARAMS_SEPARATOR)) {
+      return (result as string).split(RULE_PARAMS_SEPARATOR)
+    }
+
+    return result
+  }
+
+  /**
    * 范围校验规则
    * @param value 当前字段数据
    * @param ruleModel 校验模型
@@ -209,9 +227,17 @@ class Validator {
           result = this.regexpValidateHandler(value, validateModel.regexp)
         }
         if (validateModel.validator) {
-          result = validateModel.validator?.(value, this.formatRuleParams(ruleParams), context)! as boolean
+          result = validateModel.validator?.(value, {
+            ...context,
+            ruleValue: this.formatRuleParams(ruleParams),
+            linkField: this.formatLinkField(ruleParams)
+          })! as boolean
           if (isPromise(result)) {
-            result = await validateModel.validator?.(value, this.formatRuleParams(ruleParams), context)!
+            result = await validateModel.validator?.(value, {
+              ...context,
+              ruleValue: this.formatRuleParams(ruleParams),
+              linkField: this.formatLinkField(ruleParams)
+            })!
           }
         }
         if (!result) {

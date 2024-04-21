@@ -6,6 +6,17 @@ validator.localize(zhCN)
 
 test('confirmed', async () => {
   // 校验通过
+  console.log(await validator.validate([
+    {
+      dataKey: 'confirmed1',
+      value: '123456'
+    },
+    {
+      dataKey: 'confirmed2',
+      value: '123456',
+      rules: 'confirmed:@confirmed1'
+    }
+  ]), 888)
   await expect(validator.validate([
     {
       dataKey: 'confirmed1',
@@ -14,7 +25,7 @@ test('confirmed', async () => {
     {
       dataKey: 'confirmed2',
       value: '123456',
-      rules: 'confirmed:confirmed1'
+      rules: 'confirmed:@confirmed1'
     }
   ])).resolves.toBe(true)
 
