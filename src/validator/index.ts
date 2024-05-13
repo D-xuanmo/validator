@@ -9,6 +9,7 @@ import {
   ValidateContextType,
   ValidateDataModel,
   ValidateDataModelItem,
+  ValidateDataModelMatrix,
   ValidateErrorType,
   ValidateReturnType,
   ValidatorModelType,
@@ -259,25 +260,71 @@ class Validator {
   }
 
   /**
-   * 转换校验数据，支持对象和数组两种模式
+   * 转换数据为 map 结构，方便后续查找数据
    * @param data
    */
-  private convertData = (data: ValidateDataModel): Array<ValidateDataModelItem> => {
-    if (isObject(data)) {
-      return Object.keys(data).map((name) => ({
-        name,
-        ...(data as any)[name]
-      }))
-    }
-    return data as Array<ValidateDataModelItem>
-  }
-
-  private convertDataToMap = (data: Array<ValidateDataModelItem>) => {
+  private convertDataToMap(data: ValidateDataModel): ValidateContextType['dataKeyMap'] {
     const dataKeyMap: ValidateContextType['dataKeyMap'] = new Map()
     data.forEach((item) => {
-      dataKeyMap.set(item.dataKey, item)
+      !(item as ValidateDataModelMatrix).matrix && dataKeyMap.set(item.dataKey, item)
     })
     return dataKeyMap
+  }
+
+  /**
+   * 单个规则校验
+   * @param model
+   * @param data
+   * @param dataKeyMap
+   */
+  private async singleValidate(
+    model: ValidateDataModelItem,
+    data: ValidateDataModel,
+    dataKeyMap: ValidateContextType['dataKeyMap']
+  ) {
+    const fieldName = model.dataKey
+    const { value, ...rest } = model
+    const aliasName = model.label ?? fieldName
+    if ((model as ValidateDataModelMatrix).matrix) {
+      const { columns, data } = (model as ValidateDataModelMatrix).value
+      const errorResult: Record<string, string> = {}
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i]
+        const matrixRowData = []
+        for (let j = 0; j < columns.length; j++) {
+          const column = columns[j]
+          matrixRowData.push({
+            ...column,
+            rowId: item.rowId,
+            matrixId: (model as ValidateDataModelMatrix).matrixId,
+            value: item[column.dataKey]
+          })
+        }
+        try {
+          await this.validate(matrixRowData)
+        } catch (error) {
+          Object.assign(errorResult, error)
+        }
+      }
+      return errorResult
+    }
+    // 必填校验优先级最高
+    if (model.required && isEmpty(value)) {
+      return this.formatMessage(this.validateModel.get('required')!.message, aliasName)
+    }
+    // 如果当前数据存在局部校验规则，则不执行 rules 规则
+    if (rest.regexp || rest.validator) {
+      return this.scopeValidateHandler(value, rest as ScopeValidateType, {
+        data: data,
+        dataKeyMap
+      })
+    }
+    return await this.validateHandler(
+      value,
+      aliasName,
+      rest,
+      { data: data, dataKeyMap }
+    )
   }
 
   /**
@@ -285,47 +332,37 @@ class Validator {
    * @param data 校验数据
    * @param options
    */
-  validate = (data: ValidateDataModel, options?: {
+  validate(data: ValidateDataModel, options?: {
     // 是否校验所有规则，默认：true，如果存在多个异步校验，不建议开启
     checkAll?: boolean
-  }): ValidateReturnType => {
+  }): ValidateReturnType {
     return new Promise((resolve, reject) => {
       (async () => {
         const { checkAll = true } = options ?? {}
         const errorResult: Record<string, ValidateErrorType> = {}
-        const convertedData = this.convertData(data)
-        const dataKeyMap = this.convertDataToMap(convertedData)
-        for (let i = 0; i < convertedData.length; i++) {
-          const item = convertedData[i]
-          const fieldName = item.dataKey
-          const { value, ...rest } = item
-          const aliasName = item.label ?? fieldName
-          let result: ValidateErrorType | boolean
-          // 必填校验优先级最高
-          if (item.required && isEmpty(value)) {
-            result = this.formatMessage(this.validateModel.get('required')!.message, aliasName)
-          } else {
-            // 如果当前数据存在局部校验规则，则不执行 rules 规则
-            if (rest.regexp || rest.validator) {
-              result = await this.scopeValidateHandler(value, rest as ScopeValidateType, {
-                data: convertedData,
-                dataKeyMap
-              })
-            } else {
-              result = await this.validateHandler(
-                value,
-                aliasName,
-                rest,
-                { data: convertedData, dataKeyMap }
-              )
-            }
-          }
+        const dataKeyMap = this.convertDataToMap(data)
+        for (let i = 0; i < data.length; i++) {
+          const model = data[i]
+          const result = await this.singleValidate(model, data, dataKeyMap)
           if (this.isValidateFail(result)) {
+            const { matrixId, rowId } = (model as ValidateDataModelMatrix)
             // 如果不是校验所有，遇见第一个错误则结束本次校验
             if (!checkAll) {
-              reject({ [fieldName]: result })
+              reject({ [model.dataKey]: result })
             }
-            errorResult[fieldName] = result as ValidateErrorType
+            if (matrixId) {
+              if (isObject(result)) {
+                Object.assign(errorResult, result)
+              } else {
+                Object.assign(errorResult, {
+                  [`${matrixId}.${rowId}.${model.dataKey}`]: result as ValidateErrorType
+                })
+              }
+            } else {
+              Object.assign(errorResult, {
+                [model.dataKey]: result as ValidateErrorType
+              })
+            }
           }
         }
         if (checkAll && isObject(errorResult) && !isEmpty(errorResult)) {

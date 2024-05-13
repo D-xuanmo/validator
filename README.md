@@ -60,6 +60,38 @@ validator
       validator() {
         return false
       }
+    },
+    // 以下为矩阵校验示例
+    {
+      // 需要指定为矩阵校验
+      matrix: true,
+      // 矩阵对应的 id，整个校验数据唯一
+      matrixId: 'matrixId',
+      value: {
+        columns: [
+          {
+            dataKey: 'column1',
+            label: '矩阵列 1',
+            rules: 'required|min_length:9'
+          },
+          {
+            dataKey: 'column2',
+            label: '矩阵列 2',
+            rules: 'confirmed:@column1'
+          }
+        ],
+        data: [
+          {
+            rowId: 'a',
+            column2: '222value'
+          },
+          {
+            rowId: 'b',
+            column1: 22,
+            column2: 'xxx'
+          }
+        ]
+      }
     }
   ])
   .then(() => {

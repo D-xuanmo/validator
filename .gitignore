@@ -21,6 +21,5 @@ dist
 *.njsproj
 *.sln
 *.sw?
-test.html
 
 test/__snapshots__

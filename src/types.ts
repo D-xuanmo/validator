@@ -25,7 +25,7 @@ export type ValidateReturnType = Promise<boolean | ValidateErrorType>
  */
 export type ValidateErrorType = string
 
-export type ValidateDataModelItem = {
+export type ValidateDataModelBaseItem = {
   /**
    * 数据对应的键值
    */
@@ -42,17 +42,98 @@ export type ValidateDataModelItem = {
   label?: string
 
   /**
+   * 数据每行对应的 id
+   */
+  rowId: string
+
+  /**
    * 错误信息，优先级最高
    */
   message?: string
 } & OmitObjectProperties<ValidatorModelType, 'message'>
 
+export type MatrixColumnsType = OmitObjectProperties<ValidateDataModelBaseItem, 'value'>[]
+
+export type ValidateDataModelMatrix = OmitObjectProperties<ValidateDataModelBaseItem, 'value'> & {
+  /**
+   * 数据是否为矩阵格式
+   */
+  matrix: true
+
+  /**
+   * 矩阵 id
+   */
+  matrixId: string
+
+  /**
+   * 矩阵数据
+   */
+  value: {
+    /**
+     * 矩阵列
+     * @example 数据格式
+     * [
+     *   {
+     *     dataKey: 'column1',
+     *     label: '矩阵列 1'
+     *   },
+     *   {
+     *     dataKey: 'column2',
+     *     label: '矩阵列 2'
+     *   }
+     * ]
+     */
+    columns: MatrixColumnsType
+
+    /**
+     * 矩阵主体数据
+     * @example 数据格式
+     * [
+     *   {
+     *     rowId: 'a',
+     *     column1: 1,
+     *     column2: 'value'
+     *   },
+     *   {
+     *     rowId: 'b',
+     *     column1: 22,
+     *     column2: 'xxx'
+     *   }
+     * ]
+     */
+    data: Array<{
+      /**
+       * 数据每行对应的 id
+       */
+      rowId: string
+
+      /**
+       * 当前矩阵
+       */
+      [key: string]: any
+    }>
+  }
+}
+
+export type ValidateDataModelItem = ValidateDataModelBaseItem | ValidateDataModelMatrix
+
 /**
  * 校验数据模型
+ * @example 数据示例
+ * [
+ *   {
+ *     value: 'xxx',
+ *     label: '名称',
+ *     dataKey: 'field1'
+ *   },
+ *   {
+ *     value: 'xxx',
+ *     label: '名称',
+ *     dataKey: 'field2'
+ *   }
+ * ]
  */
-export type ValidateDataModel =
-  | Record<string, OmitObjectProperties<ValidateDataModelItem, 'dataKey'> & { dataKey?: string }>
-  | Array<ValidateDataModelItem>
+export type ValidateDataModel = Array<ValidateDataModelItem>
 
 /**
  * 所有内置的规则

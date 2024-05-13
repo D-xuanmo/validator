@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<script src="dist/validator.umd.js"></script>
+<script type="module">
+  import zhCN from './locale/zh-CN.json' assert { type: 'json' }
+
+  const validator = window.validator.default
+  validator.localize(zhCN)
+  validator
+    .validate([
+      {
+        dataKey: 'name',
+        value: 'xuanmo',
+        rules: 'required|max:5'
+      },
+      {
+        dataKey: 'age',
+        value: 18,
+        required: true,
+        rules: 'max:8'
+      },
+      {
+        dataKey: 'scope',
+        value: '',
+        message: '局部校验规则失败',
+        validator() {
+          return false
+        }
+      },
+      {
+        dataKey: 'confirmed1',
+        value: '123456'
+      },
+      {
+        dataKey: 'confirmed2',
+        value: '1234562',
+        rules: 'confirmed:@confirmed1'
+      },
+      {
+        dataKey: 'minLength',
+        value: '12345678',
+        rules: 'min_length:8'
+      },
+      {
+        dataKey: 'length2',
+        value: ' 123456789',
+        rules: 'max_length:8'
+      },
+      {
+        matrix: true,
+        matrixId: 'matrixId',
+        value: {
+          columns: [
+            {
+              dataKey: 'column1',
+              label: '矩阵列 1',
+              rules: 'required|min_length:9'
+            },
+            {
+              dataKey: 'column2',
+              label: '矩阵列 2',
+              rules: 'confirmed:@column1'
+            }
+          ],
+          data: [
+            {
+              rowId: 'a',
+              column2: '222value'
+            },
+            {
+              rowId: 'b',
+              column1: 22,
+              column2: 'xxx'
+            }
+          ]
+        }
+      }
+    ])
+    .then(() => {
+      console.log('校验通过')
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+</script>
+</body>
+</html>
