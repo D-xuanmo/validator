@@ -44,7 +44,7 @@ export type ValidateDataModelBaseItem = {
   /**
    * 数据每行对应的 id
    */
-  rowId: string
+  rowId?: string
 
   /**
    * 错误信息，优先级最高

@@ -155,6 +155,9 @@ validator.validate([
 |rules|(非必须)校验规则，以管道符分隔，冒号后边的为校验规则值|`string`|
 |label|(非必须)用于覆盖 `message {#field}` 标识|`string`|
 |regexp|(非必须)正则校验，一般只有全局中无匹配规则时使用|`RegExp \| string`|
+|matrix|(非必须)是否为矩阵数据|`boolean`|
+|matrixId|(非必须)矩阵 id|`string`|
+|rowId|(非必须)数据每行对应的 id|`string`|
 |message|(非必须)校验错误提示信息，权重最高，一般不使用|`string`|
 |validator|(非必须)校验函数权重高于 `rules`，一般只有全局中无匹配规则时使用|`ValidatorHandlerType`|
 
