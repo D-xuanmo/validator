@@ -2,7 +2,8 @@ import * as rules from '../rules'
 import { isEmpty, isObject, isPromise, throwError } from '@xuanmo/utils'
 import {
   LocaleMessageType,
-  OmitObjectProperties, RuleNames,
+  OmitObjectProperties,
+  RuleNames,
   RuleParamsType,
   ScopeValidateType,
   SingleRuleType,
@@ -18,6 +19,10 @@ import {
 import { RELATED_FIELD_SEPARATOR, RULE_PARAMS_SEPARATOR } from './constants'
 
 class Validator {
+  constructor() {
+    this.validate = this.validate.bind(this)
+  }
+
   /**
    * 错误信息
    */

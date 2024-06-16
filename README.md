@@ -232,6 +232,8 @@ validator.extends({
 - `required` 必填校验
 - `email` 邮箱
 - `length` 长度，示例：`length:2`
+- `min_length` 最小长度，示例：`min_length:2`
+- `max_length` 最大长度，示例：`max_length:2`
 - `min` 最小值，示例：`min:5`
 - `max` 最大值，示例：`max:5`
 - `number` 数字，包含浮点数、整数
